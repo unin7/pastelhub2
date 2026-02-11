@@ -89,43 +89,52 @@ export default function Schedule() {
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* [Main Container 수정 사항]
-         1. lg:min-w-[1000px]: PC에서 최소 너비 보장 (찌그러짐 방지)
-         2. lg:grid-cols-4: 4열 강제
-         3. lg:h-[560px]: 높이 강제 고정
+      {/* [Main Grid Layout]
+        - min-w-[1000px] 제거하고 w-full만 사용하되, 내부 min-w-0로 터짐 방지
+        - lg:grid-cols-4 강제 적용
       */}
-      <div className="w-full max-w-[1400px] lg:min-w-[1000px] grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto lg:h-[560px]">
+      <div className="w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto lg:h-[560px]">
         
         {/* =======================
             1. [Left Panel] 
-            lg:col-span-1 적용 / min-w-0 추가 (Grid 깨짐 방지)
+            - 문제의 원인 해결: PC에서 flex-col이 확실히 먹히도록 구조 단순화
+            - overflow-hidden 추가하여 내부 요소가 부모를 뚫고 나가는 것 방지
             ======================= */}
-        <div className="lg:col-span-1 min-w-0 bg-white/70 backdrop-blur-xl rounded-xl p-4 lg:p-6 shadow-sm border border-white/60 relative overflow-hidden transition-all flex flex-col justify-center lg:h-full">
+        <div className="lg:col-span-1 min-w-0 w-full bg-white/70 backdrop-blur-xl rounded-xl p-4 lg:p-6 shadow-sm border border-white/60 relative overflow-hidden flex flex-col lg:h-full">
           {selectedEvent ? (
-            <div className="w-full flex flex-row lg:flex-col items-center lg:justify-center gap-4 lg:gap-0 h-full">
+            /* [Layout Switcher]
+               - Mobile: flex-row (가로) / items-center
+               - PC: flex-col (세로) / justify-center / items-center
+               - w-full 추가하여 PC에서 가로폭 꽉 채우기
+            */
+            <div className="flex flex-row lg:flex-col items-center lg:justify-center gap-4 lg:gap-0 h-full w-full">
                 
-              {/* 아이콘 */}
+              {/* 아이콘 영역 */}
               <div className="flex-shrink-0 flex flex-col items-center justify-center lg:mb-6">
                  <div className="w-20 h-20 lg:w-24 lg:h-24 bg-white rounded-xl shadow-sm flex items-center justify-center text-4xl lg:text-5xl border border-purple-50">
                   {getEventIcon(selectedEvent.type)}
                 </div>
+                {/* 태그: PC 전용 */}
                 <div className="hidden lg:inline-flex mt-6 items-center justify-center px-4 py-1.5 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100">
                     {selectedEvent.type}
                 </div>
               </div>
 
-              {/* 텍스트 정보 (min-w-0 필수) */}
-              <div className="flex-1 min-w-0 flex flex-col lg:w-full lg:items-center lg:text-center">
-                {/* 모바일 태그 */}
+              {/* 텍스트 정보 영역 
+                 - min-w-0: Flex 자식 요소가 부모보다 커지는 것 방지 (가장 중요)
+                 - flex-1: 남은 공간 차지
+              */}
+              <div className="flex-1 min-w-0 flex flex-col lg:w-full lg:items-center lg:text-center justify-center">
+                {/* 모바일 전용 태그 */}
                 <div className="lg:hidden self-start mb-1 px-2 py-0.5 rounded bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-wide">
                   {selectedEvent.type}
                 </div>
 
-                <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-1 lg:mb-4 leading-tight truncate lg:whitespace-normal lg:break-keep w-full">
+                <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-1 lg:mb-4 leading-tight truncate w-full lg:whitespace-normal lg:break-keep">
                   {selectedEvent.title}
                 </h2>
                 
-                <p className="text-sm text-gray-500 leading-relaxed lg:break-keep line-clamp-2 lg:line-clamp-4 lg:mb-6 mb-0">
+                <p className="text-sm text-gray-500 leading-relaxed lg:break-keep line-clamp-2 lg:line-clamp-4 lg:mb-6 mb-0 w-full">
                   {selectedEvent.description}
                 </p>
 
@@ -137,7 +146,7 @@ export default function Schedule() {
                             <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
                                 <CalendarIcon size={18} />
                             </div>
-                            <div className="text-left min-w-0 overflow-hidden">
+                            <div className="text-left min-w-0 flex-1">
                                 <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Date</p>
                                 <p className="text-sm font-bold text-gray-700 truncate">{new Date(selectedEvent.date).toLocaleDateString()}</p>
                             </div>
@@ -146,7 +155,7 @@ export default function Schedule() {
                             <div className="w-10 h-10 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
                                 <MapPin size={18} />
                             </div>
-                            <div className="text-left min-w-0 overflow-hidden">
+                            <div className="text-left min-w-0 flex-1">
                                 <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Location</p>
                                 <p className="text-sm font-bold text-gray-700 truncate">Seoul, Korea</p>
                             </div>
@@ -176,8 +185,7 @@ export default function Schedule() {
         </div>
 
         {/* =======================
-            2. [Center Panel] 
-            lg:col-span-2 적용 / min-w-0 / overflow-hidden 필수
+            2. [Center Panel]
             ======================= */}
         <div className="lg:col-span-2 min-w-0 bg-white/70 backdrop-blur-xl rounded-2xl p-4 lg:p-6 shadow-sm border border-purple-50 flex flex-col h-auto lg:h-full overflow-hidden">
           <div className="flex items-center justify-between mb-2 lg:mb-4 flex-shrink-0 px-2 lg:px-4 pt-2">
@@ -204,7 +212,6 @@ export default function Schedule() {
           </div>
 
           <div className="flex-1 px-1 pb-1 min-h-0">
-            {/* PC: h-full을 사용하여 부모 높이(flex-1)에 정확히 맞춤 */}
             <div className="grid grid-cols-7 grid-rows-6 gap-1 lg:gap-3 h-full">
               {calendarCells.map((day, i) => {
                 const event = getEventsForDate(day);
@@ -218,7 +225,6 @@ export default function Schedule() {
                     disabled={!day} 
                     className={`
                       w-full relative rounded-xl lg:rounded-2xl flex flex-col items-center justify-center transition-all duration-300 gap-0 lg:gap-0.5
-                      /* 모바일: 정사각형 유지(aspect-square) / PC: 높이 꽉 채움(h-full) */
                       aspect-square lg:aspect-auto lg:h-full
                       ${day && event 
                         ? `${getEventColor(event.type)} hover:scale-[1.05] shadow-sm cursor-pointer` 
@@ -242,8 +248,7 @@ export default function Schedule() {
         </div>
 
         {/* =======================
-            3. [Right Panel] 
-            lg:col-span-1 적용 / min-w-0 / h-full 필수
+            3. [Right Panel]
             ======================= */}
         <div className="hidden lg:flex lg:col-span-1 min-w-0 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col h-full overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
