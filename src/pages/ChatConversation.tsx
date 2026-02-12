@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { Search, Menu, Smile, Paperclip, ChevronLeft } from 'lucide-react'; // ChevronLeft 추가
+import { Search, Menu, Smile, Paperclip, ChevronLeft } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
 import { MessageBubble } from './MessageBubble';
 import { ChatRoom, ChatMessage } from '../types'; 
 
 interface ChatConversationProps {
   roomId: string;
-  onBack: () => void; // ✅ [추가] 뒤로가기 함수 타입 정의
+  onBack: () => void;
 }
 
 const MAX_MESSAGES = 50; 
@@ -31,16 +31,16 @@ export function ChatConversation({ roomId, onBack }: ChatConversationProps) {
   }, [messages, roomId]);
 
   return (
-    <div className="flex-1 h-full flex flex-col bg-[#b2c7da] min-w-0 min-h-0 relative">
+    // ✅ [수정] h-full 및 flex-col, overflow-hidden을 주어 전체 스크롤 방지
+    <div className="flex flex-col h-full bg-[#b2c7da] min-w-0 relative overflow-hidden">
       
-      {/* 헤더 */}
-      <header className="bg-[#b2c7da]/95 backdrop-blur-sm px-4 py-3 flex justify-between items-center border-b border-black/5 flex-shrink-0 z-10">
+      {/* 헤더: 높이 고정 (flex-none) */}
+      <header className="flex-none bg-[#b2c7da]/95 backdrop-blur-sm px-4 py-3 flex justify-between items-center border-b border-black/5 z-10">
         
         <div className="flex items-center gap-3 min-w-0">
-          {/* ✅ [추가] 모바일 전용 뒤로가기 버튼 (md 이상에서는 숨김) */}
           <button 
             onClick={onBack}
-            className="md:hidden text-gray-700 -ml-1 pr-1"
+            className="md:hidden text-gray-700 -ml-1 pr-1 flex items-center justify-center"
           >
             <ChevronLeft size={24} />
           </button>
@@ -71,7 +71,7 @@ export function ChatConversation({ roomId, onBack }: ChatConversationProps) {
         </div>
       </header>
 
-      {/* 대화 내용 (기존 코드 동일) */}
+      {/* 대화 내용: 남은 공간 차지 (flex-1) 및 내부 스크롤 (overflow-y-auto) */}
       <div 
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar"
@@ -98,7 +98,7 @@ export function ChatConversation({ roomId, onBack }: ChatConversationProps) {
         )}
       </div>
 
-      {/* 입력창 (기존 코드 동일) */}
+      {/* 입력창: 높이 고정 (flex-none) */}
       <div className="flex-none bg-white p-4 z-20 border-t border-gray-100 safe-area-bottom">
         <div className="flex flex-col bg-gray-50 rounded-xl px-4 py-3">
             <textarea 
