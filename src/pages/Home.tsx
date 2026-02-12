@@ -8,10 +8,10 @@ import {
   Heart, 
   Radio 
 } from 'lucide-react';
-import { useJsonData } from '../hooks/useJsonData'; // 경로가 맞는지 확인해주세요
-import { Member } from '../types'; // 경로가 맞는지 확인해주세요
+import { useJsonData } from '../hooks/useJsonData'; // 경로 확인 필요
+import { Member } from '../types'; // 경로 확인 필요
 
-// --- [1] 공식 링크 데이터 및 컴포넌트 ---
+// --- [1] 공식 링크 데이터 ---
 
 interface SocialLink {
   icon: React.ReactNode;
@@ -59,11 +59,17 @@ const socialLinks: SocialLink[] = [
   },
 ];
 
+// --- [2] 공식 링크 및 푸터 컴포넌트 ---
+
 function OfficialLinks() {
+  // 현재 연도를 자동으로 가져옵니다 (2026, 2027... 자동으로 변경됨)
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-100/50 w-full">
       <h4 className="text-center text-gray-800 mb-5 font-bold text-lg">Official Links</h4>
 
+      {/* 아이콘 버튼 영역 */}
       <div className="flex justify-center gap-4 flex-wrap">
         {socialLinks.map((link, index) => (
           <a
@@ -76,12 +82,9 @@ function OfficialLinks() {
           >
             {/* Icon Circle */}
             <div className="relative w-14 h-14 rounded-full bg-white shadow-md hover:shadow-xl transition-all overflow-hidden group-hover:scale-110 duration-300 border border-purple-50">
-              {/* Gradient on Hover */}
               <div
                 className={`absolute inset-0 bg-gradient-to-br ${link.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
               ></div>
-
-              {/* Icon */}
               <div className="absolute inset-0 flex items-center justify-center text-purple-400 group-hover:text-white transition-colors z-10">
                 {link.icon}
               </div>
@@ -95,22 +98,33 @@ function OfficialLinks() {
         ))}
       </div>
 
-      {/* Footer Text inside the box */}
-      <div className="text-center space-y-1 pt-5 mt-4 border-t border-purple-100">
-        <p className="text-xs text-gray-400">
+      {/* --- Footer Text (오해 소지 없도록 명확히 수정됨) --- */}
+      <div className="text-center mt-8 pt-6 border-t border-purple-100/80">
+        <p className="text-sm text-gray-700 font-medium mb-1">
           Made with 💜 by Fans
         </p>
+        
+        {/* 비공식 사이트임을 명확히 알리는 문구 */}
+        <p className="text-[11px] text-gray-500 leading-relaxed">
+          본 사이트는 팬이 운영하는 <b>비공식 팬 사이트</b>입니다.<br className="hidden sm:block"/>
+          소속사(Stellive)와 직접적인 관련이 없으며 수익을 창출하지 않습니다.
+        </p>
+
+        {/* 저작권 표시 (자동 연도 적용) */}
+        <div className="mt-3 text-[10px] text-gray-400">
+          <p>© {currentYear} Fan Community. All rights reserved.</p>
+          <p className="mt-0.5">Streamer IP & Assets belongs to Stellive.</p>
+        </div>
       </div>
     </div>
   );
 }
 
-// --- [2] 메인 Home 컴포넌트 ---
+// --- [3] 메인 Home 페이지 ---
 
 export default function Home() {
   const { data: members } = useJsonData<Member[]>('status');
 
-  // 'live' 또는 'x_live' 상태인 멤버 필터링
   const liveMembers = members?.filter(
     (member) => member.status && member.status.toLowerCase().includes('live')
   ) || [];
@@ -135,7 +149,6 @@ export default function Home() {
       </div>
 
       {/* 3. 모바일 전용 Live 리스트 (md:hidden - 768px 미만에서만 보임) */}
-      {/* PC에서는 사이드바에 보인다고 가정하고 숨김 처리 */}
       <div className="w-full max-w-md md:hidden px-4">
         <div className="flex items-center gap-2 mb-4 ml-1">
             <span className="relative flex h-3 w-3">
@@ -152,7 +165,6 @@ export default function Home() {
             {liveMembers.map((member, idx) => {
               const isXSpace = member.status === 'X_live';
               const badgeText = isXSpace ? "SPACE" : "LIVE";
-              // X 스페이스일 때는 보라색, 일반 방송은 에메랄드/청록색
               const ringGradient = isXSpace ? 'from-purple-400 to-pink-400' : 'from-emerald-400 to-teal-400';
 
               return (
@@ -163,10 +175,8 @@ export default function Home() {
                   rel="noreferrer" 
                   className="group flex items-center gap-4 p-3 rounded-2xl bg-white shadow-sm border border-slate-100 active:scale-[0.98] transition-all hover:shadow-md hover:border-purple-200"
                 >
-                  {/* 프로필 이미지 + 라이브 링 */}
                   <div className={`relative flex-none w-[52px] h-[52px] rounded-full p-[2px] bg-gradient-to-br ${ringGradient}`}>
                     <img src={member.profileImg} alt={member.name} className="w-full h-full rounded-full object-cover bg-white" />
-                    {/* 라이브 아이콘 오버레이 */}
                     <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow-sm border border-slate-50">
                       {isXSpace ? <Radio size={12} className="text-purple-500"/> : <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"/>}
                     </div>
@@ -190,7 +200,6 @@ export default function Home() {
             })}
           </div>
         ) : (
-          // 방송 없음 (Empty State)
           <div className="flex flex-col items-center justify-center py-12 text-slate-400 space-y-3 bg-slate-50/50 rounded-2xl border border-slate-100 border-dashed">
             <div className="p-3 bg-slate-100 rounded-full">
                 <Radio className="size-6 text-slate-300" />
