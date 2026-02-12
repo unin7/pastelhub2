@@ -164,10 +164,10 @@ export default function Schedule() {
           <div className="bg-white/70 text-white p-5 rounded-2xl shadow-lg animate-in slide-in-from-bottom-4 duration-300">
              <div className="flex justify-between items-start mb-3">
                <span className="text-2xl">{getEventIcon(selectedEvent.type)}</span>
-               <span className="bg-white/20 px-2 py-0.5 rounded text-gray-400 text-[10px] font-bold uppercase">{selectedEvent.type}</span>
+               <span className="bg-purple-50 px-2 py-0.5 rounded text-purple-600 text-[10px] font-bold uppercase">{selectedEvent.type}</span>
              </div>
-             <h3 className="font-bold text-gray-400 text-lg mb-1">{selectedEvent.title}</h3>
-             <p className="text-gray-400 text-xs mb-4">{selectedEvent.description}</p>
+             <h3 className="font-bold text-gray-800 text-lg mb-1">{selectedEvent.title}</h3>
+             <p className="text-gray-500 text-xs mb-4">{selectedEvent.description}</p>
              <div className="flex items-center gap-3 text-xs pt-3 border-t border-slate/20">
                <div className="flex items-center gap-1"><CalendarIcon size={12}/> {new Date(selectedEvent.date).toLocaleDateString()}</div>
                <div className="flex items-center gap-1"><MapPin size={12}/> Seoul</div>
