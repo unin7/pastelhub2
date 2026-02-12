@@ -127,8 +127,23 @@ export default function Schedule() {
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
+      {/* =================================================================
+          [Mobile View]
+          md:hidden 클래스를 사용하여 데스크톱(md 이상)에서는 숨김 처리
+          모바일에서는 이 영역만 보입니다.
+         ================================================================= */}
+      <div className="md:hidden w-full h-full flex flex-col justify-center items-center text-center">
+        <h1 className="text-2xl font-bold text-gray-800">MOBILE VIEW</h1>
+        <p className="text-gray-500 mt-2">모바일 전용 화면입니다 (준비중)</p>
+      </div>
+
+      {/* =================================================================
+          [Desktop View]
+          hidden md:grid 클래스를 사용하여 모바일에서는 숨김 처리
+          기존 로직은 그대로 유지되며 md(768px) 이상에서만 보입니다.
+         ================================================================= */}
       <div 
-        className="min-w-[1000px] max-w-[1400px] w-full grid grid-cols-4 gap-6"
+        className="hidden md:grid min-w-[1000px] max-w-[1400px] w-full grid-cols-4 gap-6"
         style={{ height: '560px' }}
       >
         
@@ -138,7 +153,7 @@ export default function Schedule() {
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
-               
+                
                {/* 이벤트 아이콘 */}
                <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-5xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
@@ -301,7 +316,7 @@ export default function Schedule() {
                     <p className={`text-sm font-bold truncate ${isSelected ? 'text-gray-800' : 'text-gray-600'}`}>
                       {event.title}
                     </p>
-                    <p className="text-[10px] text-gray-400 mt-0.5 font-medium uppercase tracking-wide">
+                    <p className="text-sm text-gray-400 mt-0.5 font-medium uppercase tracking-wide">
                       {event.type}
                     </p>
                   </div>
