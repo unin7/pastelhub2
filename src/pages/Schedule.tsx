@@ -20,12 +20,11 @@ export default function Schedule() {
     }
   }, [schedules]);
 
-  // 아이콘 헬퍼 함수
   const getEventIcon = (type: ScheduleItem['type']) => {
     switch (type) {
       case 'birthday': return <Gift className="w-full h-full p-2" />;
       case 'album': return <Music className="w-full h-full p-2" />;
-      case 'concert': return <CalendarIcon className="w-full h-full p-2" />; // 마이크 대신 달력 아이콘 대체
+      case 'concert': return <CalendarIcon className="w-full h-full p-2" />;
       case 'broadcast': return <Radio className="w-full h-full p-2" />;
       case 'event': return <PartyPopper className="w-full h-full p-2" />;
       default: return <CalendarIcon className="w-full h-full p-2" />;
@@ -33,29 +32,37 @@ export default function Schedule() {
   };
 
   return (
-    <div className="w-full h-screen p-2 flex justify-center items-start md:items-center overflow-hidden bg-gray-50/50">
+    <div className="w-full h-screen p-2 overflow-hidden bg-gray-50/50 flex justify-center items-center">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* [레이아웃 구조]
-         - Mobile: flex-col (세로 배치) -> 높이 100% 사용
-         - PC: grid-cols-4 (가로 4칸 배치) -> 높이 560px 고정
+      {/* [레이아웃 전략: 100% Grid]
+        
+        1. Mobile (기본):
+           - grid-cols-1 : 가로 1칸
+           - grid-rows-[auto_1fr] : 세로 2줄 (첫줄:달력-자동높이, 둘째줄:상세-남은공간전부)
+           - h-full : 화면 전체 높이 사용
+           
+        2. PC (md 이상):
+           - md:grid-cols-4 : 가로 4칸 (1:2:1 비율용)
+           - md:grid-rows-1 : 세로 1줄
+           - md:h-[560px] : 높이 고정
       */}
       <div 
         className="
           w-full h-full gap-4
-          flex flex-col 
-          md:grid md:grid-cols-4 md:gap-6 md:min-w-[1000px] md:max-w-[1400px] md:h-[560px]
+          grid grid-cols-1 grid-rows-[auto_1fr]
+          md:grid-cols-4 md:grid-rows-1 md:min-w-[1000px] md:max-w-[1400px] md:h-[560px] md:gap-6
         "
       >
         
-        {/* =======================
-            1. [좌측] PC용 상세 정보 (Mobile: Hidden)
-            - md:col-span-1 (1칸 차지)
-           ======================= */}
-        <div className="hidden md:flex md:col-span-1 h-full bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col justify-center text-center relative overflow-hidden">
+        {/* 1. [좌측] PC용 상세 정보 (1칸) 
+          - Mobile: hidden
+          - PC: block, col-span-1
+        */}
+        <div className="hidden md:block col-span-1 h-full bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
                <div className="w-24 h-24 mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-purple-500 mb-8 border border-purple-50">
@@ -64,10 +71,10 @@ export default function Schedule() {
               <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100">
                 {selectedEvent.type}
               </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-1 w-full break-keep">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-1 w-full break-keep text-center">
                 {selectedEvent.title}
               </h2>
-              <p className="text-sm text-gray-500 leading-relaxed px-1 break-keep line-clamp-4 mb-8">
+              <p className="text-sm text-gray-500 leading-relaxed px-1 break-keep line-clamp-4 mb-8 text-center">
                 {selectedEvent.description}
               </p>
               <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto">
@@ -82,31 +89,21 @@ export default function Schedule() {
                     </p>
                   </div>
                 </div>
-                 <div className="flex items-center gap-4">
-                   <div className="w-10 h-10 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500">
-                    <MapPin size={18} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Location</p>
-                    <p className="text-sm font-bold text-gray-700 mt-0.5 truncate">Seoul, Korea</p>
-                  </div>
-                </div>
               </div>
             </div>
           ) : (
-            <div className="text-gray-300 flex flex-col items-center gap-4 select-none opacity-50">
+            <div className="h-full flex flex-col items-center justify-center text-gray-300 gap-4 select-none opacity-50">
               <Info className="w-20 h-20 opacity-20" />
               <p className="text-base font-medium">일정을 선택해주세요</p>
             </div>
           )}
         </div>
 
-        {/* =======================
-            2. [중앙] 달력 (Mobile & PC)
-            - Mobile: 높이 자동 (내용만큼)
-            - PC: md:col-span-2 (2칸 차지 -> 여기서 1:2:1 비율 완성)
-           ======================= */}
-        <div className="w-full shrink-0 md:h-full md:col-span-2">
+        {/* 2. [중앙] 달력 (PC: 2칸 / Mobile: 1칸-상단)
+          - Mobile: row-start-1 (첫번째 줄)
+          - PC: md:col-span-2 (가운데 2칸 차지)
+        */}
+        <div className="w-full md:h-full md:col-span-2 row-start-1">
           <CalendarBoard 
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
@@ -117,10 +114,10 @@ export default function Schedule() {
           />
         </div>
 
-        {/* =======================
-            3. [우측] PC용 Upcoming (Mobile: Hidden)
-            - md:col-span-1 (1칸 차지)
-           ======================= */}
+        {/* 3. [우측] PC용 Upcoming (1칸)
+          - Mobile: hidden
+          - PC: block, col-span-1
+        */}
         <div className="hidden md:flex md:col-span-1 h-full bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
@@ -145,17 +142,15 @@ export default function Schedule() {
           </div>
         </div>
 
-        {/* =======================
-            4. [하단] 모바일 전용 상세 정보 (PC: Hidden)
-            - md:hidden (PC에서 숨김)
-            - flex-1 (남은 공간 모두 차지)
-            - 새로 작성된 컴포넌트
-           ======================= */}
-        <div className="flex md:hidden flex-1 w-full bg-white/80 backdrop-blur-md rounded-t-3xl rounded-b-2xl p-5 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] border border-white/60 flex-col relative overflow-hidden mt-auto">
+        {/* 4. [하단] 모바일 전용 상세 정보 (남은 공간 채움)
+          - Mobile: row-start-2 (두번째 줄), h-full (남은 공간 꽉 채움)
+          - PC: hidden
+        */}
+        <div className="md:hidden row-start-2 h-full w-full bg-white/80 backdrop-blur-md rounded-t-3xl p-5 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] border border-white/60 overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in slide-in-from-bottom-4 duration-500 h-full flex flex-col">
-              {/* 모바일 헤더: 아이콘 + 제목 */}
-              <div className="flex items-start gap-4 mb-4">
+              {/* 모바일 헤더 */}
+              <div className="flex items-start gap-4 mb-4 shrink-0">
                 <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-purple-500 border border-purple-50 shrink-0">
                   {getEventIcon(selectedEvent.type)}
                 </div>
@@ -174,23 +169,17 @@ export default function Schedule() {
                 </div>
               </div>
 
-              {/* 모바일 본문: 설명 */}
+              {/* 모바일 본문 (스크롤) */}
               <div className="flex-1 overflow-y-auto mb-4 scrollbar-hide">
                 <p className="text-sm text-gray-600 leading-relaxed break-keep">
                   {selectedEvent.description}
                 </p>
               </div>
 
-              {/* 모바일 푸터: 위치 정보 */}
-              <div className="mt-auto pt-4 border-t border-gray-100 flex items-center gap-3 text-gray-500">
+              {/* 모바일 푸터 */}
+              <div className="mt-auto pt-4 border-t border-gray-100 flex items-center gap-3 text-gray-500 shrink-0">
                 <MapPin size={16} className="text-pink-400" />
                 <span className="text-xs font-bold text-gray-600">Seoul, Korea</span>
-                <div className="ml-auto flex gap-2">
-                   {/* 모바일용 액션 버튼 예시 */}
-                   <button className="px-4 py-2 bg-purple-500 text-white text-xs font-bold rounded-xl shadow-md active:scale-95 transition-transform">
-                     자세히 보기
-                   </button>
-                </div>
               </div>
             </div>
           ) : (
