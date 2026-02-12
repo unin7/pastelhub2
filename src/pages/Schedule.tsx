@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 // 아이콘 라이브러리 (lucide-react) 임포트
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Info, Smartphone } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Info } from 'lucide-react';
 // 커스텀 훅 및 타입 임포트
 import { useJsonData } from '../hooks/useJsonData';
 import { ScheduleItem } from '../types';
@@ -120,7 +120,6 @@ export default function Schedule() {
   };
 
   return (
-    // 기존 설정 유지 (overflow-hidden)
     <div className="w-full h-screen p-2 flex justify-center items-center overflow-hidden">
       {/* 전역 스크롤바 숨김 스타일 */}
       <style>{`
@@ -128,28 +127,8 @@ export default function Schedule() {
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* =================================================================
-          [1. MOBILE VIEW]
-          md:hidden -> 화면 너비 768px 미만일 때만 이 텍스트 박스가 보입니다.
-         ================================================================= */}
-      <div className="md:hidden flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4">
-            <Smartphone className="w-8 h-8 text-gray-400"/>
-        </div>
-        <h2 className="text-xl font-bold text-gray-800">모바일 버전 준비중</h2>
-        <p className="text-gray-500 mt-2 text-sm">
-          화면을 키우시면 PC 버전 캘린더를<br/>
-          확인하실 수 있습니다.
-        </p>
-      </div>
-
-      {/* =================================================================
-          [2. PC VIEW]
-          hidden md:grid -> 768px 이상일 때만 그리드로 표시
-          나머지 클래스는 주신 코드 그대로 유지했습니다.
-         ================================================================= */}
       <div 
-        className="hidden md:grid min-w-[1000px] max-w-[1400px] w-full grid-cols-4 gap-6"
+        className="min-w-[1000px] max-w-[1400px] w-full grid grid-cols-4 gap-6"
         style={{ height: '560px' }}
       >
         
@@ -159,7 +138,7 @@ export default function Schedule() {
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
-                
+               
                {/* 이벤트 아이콘 */}
                <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-5xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
@@ -322,7 +301,7 @@ export default function Schedule() {
                     <p className={`text-sm font-bold truncate ${isSelected ? 'text-gray-800' : 'text-gray-600'}`}>
                       {event.title}
                     </p>
-                    <p className="text-sm text-gray-400 mt-0.5 font-medium uppercase tracking-wide">
+                    <p className="text-[10px] text-gray-400 mt-0.5 font-medium uppercase tracking-wide">
                       {event.type}
                     </p>
                   </div>
