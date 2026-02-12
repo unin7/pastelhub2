@@ -1545,6 +1545,10 @@
     min-width: 200px;
   }
 
+  .min-w-\[320px\] {
+    min-width: 320px;
+  }
+
   .min-w-max {
     min-width: max-content;
   }
