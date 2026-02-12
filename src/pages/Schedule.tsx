@@ -182,49 +182,52 @@ export default function Schedule() {
 
         {/* 모바일 3: 선택된 날짜 상세 내역 */}
         {selectedEvent && (
-          <div className="relative bg-white/70 backdrop-blur-xl p-5 rounded-2xl shadow-lg border border-white/60 animate-in slide-in-from-bottom-4 duration-300">
-            
-            {/* 1. 우측 상단 모서리 태그 */}
-            <div className="absolute top-4 right-4">
-              <span className="bg-purple-50 px-2 py-0.5 rounded-md text-purple-600 text-[10px] font-extrabold uppercase tracking-widest border border-purple-100/50">
-                {selectedEvent.type}
-              </span>
-            </div>
-        
-            {/* 2. 메인 콘텐츠 (아이콘 중앙 정렬) */}
+          <div className="bg-white/70 backdrop-blur-xl p-4 rounded-2xl shadow-lg border border-white/60 animate-in slide-in-from-bottom-4 duration-300">
             <div className="flex items-center gap-4">
-              {/* 좌측 아이콘 박스 */}
+              
+              {/* 1. 좌측 아이콘 영역 (중앙 정렬 유지) */}
               <div className="w-16 h-16 flex-shrink-0 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
         
-              {/* 우측 정보 영역 */}
-              <div className="flex-1 min-w-0 pr-10"> {/* 태그와 겹치지 않게 우측 여백 확보 */}
-                <h3 className="font-bold text-gray-800 text-lg mb-0.5 leading-tight truncate">
-                  {selectedEvent.title}
-                </h3>
-                <p className="text-gray-500 text-xs mb-3 line-clamp-1">
-                  {selectedEvent.description}
-                </p>
+              {/* 2. 우측 정보 영역 (이 영역 내부의 우측 상단에 태그 배치) */}
+              <div className="flex-1 min-w-0 relative pt-1"> 
+                {/* 정보 영역 내 우상단 태그 */}
+                <div className="absolute top-0 right-0">
+                  <span className="bg-purple-50 px-2 py-0.5 rounded-md text-purple-600 text-[9px] font-extrabold uppercase tracking-tight border border-purple-100/50">
+                    {selectedEvent.type}
+                  </span>
+                </div>
         
-                {/* 하단 메타 정보 (날짜, 장소) */}
+                {/* 제목 및 설명 (태그와 겹치지 않게 우측 패딩 유지) */}
+                <div className="pr-12"> 
+                  <h3 className="font-bold text-gray-800 text-base mb-0.5 leading-tight truncate">
+                    {selectedEvent.title}
+                  </h3>
+                  <p className="text-gray-500 text-[11px] mb-3 line-clamp-1">
+                    {selectedEvent.description}
+                  </p>
+                </div>
+        
+                {/* 하단 메타 정보 */}
                 <div className="flex items-center gap-3 pt-2 border-t border-gray-100/80">
                   <div className="flex items-center gap-1.5">
-                    <div className="w-5 h-5 rounded-md bg-purple-50 flex items-center justify-center text-purple-500">
-                      <CalendarIcon size={10} />
+                    <div className="w-4 h-4 rounded-md bg-purple-50 flex items-center justify-center text-purple-500">
+                      <CalendarIcon size={9} />
                     </div>
-                    <span className="text-[11px] font-bold text-gray-700">
+                    <span className="text-[10px] font-bold text-gray-700">
                       {new Date(selectedEvent.date).toLocaleDateString()}
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <div className="w-5 h-5 rounded-md bg-pink-50 flex items-center justify-center text-pink-500">
-                      <MapPin size={10} />
+                    <div className="w-4 h-4 rounded-md bg-pink-50 flex items-center justify-center text-pink-500">
+                      <MapPin size={9} />
                     </div>
-                    <span className="text-[11px] font-bold text-gray-700">Seoul</span>
+                    <span className="text-[10px] font-bold text-gray-700">Seoul</span>
                   </div>
                 </div>
               </div>
+        
             </div>
           </div>
         )}
