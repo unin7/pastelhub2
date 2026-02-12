@@ -15,7 +15,7 @@ export default function Timeline() {
 
   return (
     // ✅ [수정] h-full 대신 h-[100dvh]를 사용하여 모바일 주소표시줄 영역 문제 해결 및 스크롤 고정
-    <div className="flex justify-center items-center w-full h-[100dvh] p-0 font-sans bg-transparent overflow-hidden">
+    <div className="flex justify-center items-center w-full h-[100dvh] p-0 font-sans bg-gray-50 rounded-xl overflow-hidden">
       <div className="w-full h-full bg-transparent rounded-xl shadow-none md:shadow-md border-0 md:border border-gray-200 flex overflow-hidden font-sans relative">
         
         {/* 왼쪽: 채팅방 목록 */}
