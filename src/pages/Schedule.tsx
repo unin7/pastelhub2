@@ -45,40 +45,61 @@ export default function Schedule() {
         style={{ height: '560px' }}
       >
         
-        {/* 1. [좌측] 상세 정보 */}
+        {/* =======================
+            1. [좌측] 상세 정보 패널 (Details Panel)
+           ======================= */}
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
-            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center">
-               <div className="w-20 h-20 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-4xl mb-6 border border-purple-50">
+            <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
+               
+               {/* 이벤트 아이콘 */}
+               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-5xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
-              <div className="inline-flex items-center px-3 py-1 mb-4 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100">
+              
+              {/* 이벤트 타입 태그 */}
+              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
-              <h2 className="text-xl font-bold text-gray-800 mb-3 break-keep">{selectedEvent.title}</h2>
-              <p className="text-xs text-gray-500 mb-6 line-clamp-3">{selectedEvent.description}</p>
+
+              {/* 제목 및 설명 */}
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-1 w-full break-keep">
+                {selectedEvent.title}
+              </h2>
               
-              <div className="w-full bg-white/60 rounded-2xl p-4 text-left border border-white/80 space-y-3 shadow-sm mt-auto">
-                <div className="flex items-center gap-3">
-                  <div className="w-24 h-24 rounded-lg bg-purple-50 flex items-center justify-center text-purple-500"><CalendarIcon size={16} /></div>
-                  <div>
-                    <p className="text-[9px] text-gray-400 font-bold uppercase">Date</p>
-                    <p className="text-xs font-bold text-gray-700">{new Date(selectedEvent.date).toLocaleDateString()}</p>
+              <p className="text-sm text-gray-500 leading-relaxed px-1 break-keep line-clamp-4 mb-8">
+                {selectedEvent.description}
+              </p>
+
+              {/* 일시 및 장소 메타 정보 */}
+              <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto flex-shrink-0">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
+                    <CalendarIcon size={18} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Date</p>
+                    <p className="text-sm font-bold text-gray-700 mt-0.5 truncate">
+                      {new Date(selectedEvent.date).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-pink-50 flex items-center justify-center text-pink-500"><MapPin size={14} /></div>
-                  <div>
-                    <p className="text-[9px] text-gray-400 font-bold uppercase">Location</p>
-                    <p className="text-xs font-bold text-gray-700">Seoul, Korea</p>
+                 <div className="flex items-center gap-4">
+                   <div className="w-10 h-10 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
+                    <MapPin size={18} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Location</p>
+                    <p className="text-sm font-bold text-gray-700 mt-0.5 truncate">Seoul, Korea</p>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-gray-300 flex flex-col items-center gap-4 opacity-50">
-              <Info className="w-16 h-16 opacity-20" />
-              <p className="text-sm font-medium">일정을 선택해주세요</p>
+            /* 선택된 이벤트가 없을 때 표시되는 Placeholder */
+            <div className="text-gray-300 flex flex-col items-center gap-4 select-none opacity-50">
+              <Info className="w-20 h-20 opacity-20" />
+              <p className="text-base font-medium">일정을 선택해주세요</p>
             </div>
           )}
         </div>
