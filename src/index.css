@@ -1548,6 +1548,11 @@
   .min-w-\[320px\] {
     min-width: 320px;
   }
+  
+  .min-w-\[360px\] {
+    min-width: 360px;
+  }
+  
 
   .min-w-max {
     min-width: max-content;
