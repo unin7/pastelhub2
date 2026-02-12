@@ -63,6 +63,16 @@ export default function CalendarBoard({
   };
 
   // --- 스타일 헬퍼 ---
+  const getEventColor = (type: ScheduleItem['type']) => {
+    switch (type) {
+      case 'birthday': return 'bg-pink-100 text-pink-600 ring-pink-200';
+      case 'album': return 'bg-purple-100 text-purple-600 ring-purple-200';
+      case 'concert': return 'bg-blue-100 text-blue-600 ring-blue-200';
+      case 'broadcast': return 'bg-yellow-100 text-yellow-700 ring-yellow-200';
+      default: return 'bg-green-100 text-green-600 ring-green-200';
+    }
+  };
+
   const getEventIcon = (type: ScheduleItem['type']) => {
     switch (type) {
       case 'birthday': return '🎂';
@@ -74,18 +84,8 @@ export default function CalendarBoard({
     }
   };
 
-  const getEventColor = (type: ScheduleItem['type']) => {
-    switch (type) {
-      case 'birthday': return 'bg-pink-100 text-pink-600 ring-pink-200';
-      case 'album': return 'bg-purple-100 text-purple-600 ring-purple-200';
-      case 'concert': return 'bg-blue-100 text-blue-600 ring-blue-200';
-      case 'broadcast': return 'bg-yellow-100 text-yellow-700 ring-yellow-200';
-      default: return 'bg-green-100 text-green-600 ring-green-200';
-    }
-  };
-
   return (
-    <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden min-h-[400px]">
+    <div className="bg-white/70 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-purple-50 flex flex-col h-full overflow-hidden">
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-4 flex-shrink-0 px-4 pt-2">
         <h3 className="text-gray-800 font-bold flex items-center gap-3 text-2xl tracking-tight">
@@ -125,7 +125,7 @@ export default function CalendarBoard({
                 onClick={() => day && event && setSelectedEvent(event)}
                 disabled={!day}
                 className={`
-                  w-full h-12 md:h-16 self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
+                  w-full h-16 self-center rounded-2xl flex flex-col items-center justify-center relative transition-all duration-300 gap-0.5
                   ${day && event
                     ? `${getEventColor(event.type)} hover:scale-[1.05] shadow-sm cursor-pointer`
                     : 'hover:bg-gray-50/50 text-gray-400'}
@@ -136,8 +136,8 @@ export default function CalendarBoard({
               >
                 {day && (
                   <>
-                    <span className={`text-sm md:text-base leading-none ${event ? 'font-bold opacity-90' : ''}`}>{day}</span>
-                    {event && <span className="text-xl md:text-2xl leading-none group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
+                    <span className={`text-base leading-none ${event ? 'font-bold opacity-90' : ''}`}>{day}</span>
+                    {event && <span className="text-2xl leading-none group-hover:-translate-y-1 transition-transform">{getEventIcon(event.type)}</span>}
                   </>
                 )}
               </button>
