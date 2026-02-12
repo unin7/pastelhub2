@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Clock, MapPin, Info } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
 import { ScheduleItem } from '../types';
-import CalendarBoard from './CalendarBoard';
+import CalendarBoard from './CalendarBoard'; // [추가] 분리된 달력 컴포넌트
 
 const monthNames = [
   '1월', '2월', '3월', '4월', '5월', '6월',
@@ -32,35 +32,32 @@ export default function Schedule() {
   };
 
   return (
-    // 전체 컨테이너: PC에서는 높이 고정(h-screen) 및 중앙 정렬, 모바일에서는 스크롤 가능
+    // 전체 컨테이너: 모바일에서는 overflow-y-auto (스크롤 허용), 데스크탑은 overflow-hidden (고정)
     <div className="w-full min-h-screen md:h-screen p-2 flex justify-center items-start md:items-center overflow-y-auto md:overflow-hidden bg-gray-50/50">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* [레이아웃 핵심 수정]
-        1. 기본(Mobile): flex flex-col (세로 배치)
-        2. md 이상(PC): display:grid (가로 배치)로 flex 속성을 덮어씌움
-        
-        * min-w-[1000px]가 적용되므로 md(768px) ~ 1000px 사이 구간에서는 가로 스크롤이 생기며 그리드가 유지됩니다.
+      {/* [레이아웃 수정의 핵심]
+        1. flex flex-col: 모바일 기본값 (세로 배치)
+        2. md:grid md:grid-cols-4: 데스크탑(768px 이상)에서는 4칸 그리드로 변경 (기존 코드 복구)
+        3. md:min-w-[1000px]: 데스크탑에서 최소 너비 보장
       */}
       <div 
         className="
           w-full gap-6
-          flex flex-col
+          flex flex-col 
           md:grid md:grid-cols-4 md:min-w-[1000px] md:max-w-[1400px] md:h-[560px]
         "
       >
         
-        {/* 1. [좌측] 상세 정보 패널 
-          - Mobile: hidden (숨김)
-          - PC: flex (보임) 
-        */}
+        {/* 1. [좌측] 상세 정보 패널 */}
+        {/* 모바일: hidden (숨김), 데스크탑: md:flex (보임) + md:col-span-1 */}
         <div className="hidden md:flex md:col-span-1 h-full bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col justify-center text-center relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
-               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-4xl mb-8 border border-purple-50">
+               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-5xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
@@ -96,18 +93,16 @@ export default function Schedule() {
               </div>
             </div>
           ) : (
-            <div className="text-gray-300 flex flex-col items-center gap-4 select-none opacity-50 py-10">
+            <div className="text-gray-300 flex flex-col items-center gap-4 select-none opacity-50">
               <Info className="w-20 h-20 opacity-20" />
               <p className="text-base font-medium">일정을 선택해주세요</p>
             </div>
           )}
         </div>
 
-        {/* 2. [중앙] 달력 (Calendar Board)
-          - Mobile: flex-col 내부에서 자연스럽게 표시 (별도 width 지정 X)
-          - PC: col-span-2 (중앙 2칸 차지) 
-        */}
-        <div className="w-full md:h-full md:col-span-2">
+        {/* 2. [중앙] 메인 캘린더 (Calendar) */}
+        {/* 모바일: 항상 보임, 데스크탑: md:col-span-2 (2칸 차지) */}
+        <div className="w-full md:col-span-2 h-auto md:h-full">
           <CalendarBoard 
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
@@ -118,10 +113,8 @@ export default function Schedule() {
           />
         </div>
 
-        {/* 3. [우측] 다가오는 일정 (Upcoming)
-          - Mobile: hidden (숨김)
-          - PC: flex (보임)
-        */}
+        {/* 3. [우측] 다가오는 일정 리스트 (Upcoming Panel) */}
+        {/* 모바일: hidden (숨김), 데스크탑: md:flex (보임) + md:col-span-1 */}
         <div className="hidden md:flex md:col-span-1 h-full bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
