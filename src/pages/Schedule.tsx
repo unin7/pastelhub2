@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Clock, MapPin, Info } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
 import { ScheduleItem } from '../types';
-import CalendarBoard from './CalendarBoard'; // [추가] 분리된 달력 컴포넌트
+import CalendarBoard from './CalendarBoard';
 
 const monthNames = [
   '1월', '2월', '3월', '4월', '5월', '6월',
@@ -32,28 +32,29 @@ export default function Schedule() {
   };
 
   return (
-    // 전체 컨테이너: 모바일에서는 overflow-y-auto (스크롤 허용), 데스크탑은 overflow-hidden (고정)
     <div className="w-full min-h-screen md:h-screen p-2 flex justify-center items-start md:items-center overflow-y-auto md:overflow-hidden bg-gray-50/50">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* [레이아웃 수정의 핵심]
-        1. flex flex-col: 모바일 기본값 (세로 배치)
-        2. md:grid md:grid-cols-4: 데스크탑(768px 이상)에서는 4칸 그리드로 변경 (기존 코드 복구)
-        3. md:min-w-[1000px]: 데스크탑에서 최소 너비 보장
+      {/* [수정 포인트]
+          Flex를 쓰지 않고 Grid로 통일하여 충돌 방지
+          1. 모바일: grid-cols-1 (세로 1줄) / h-auto (높이 자동)
+          2. PC(md): grid-cols-4 (가로 4칸) / h-[560px] (높이 고정) / min-w-[1000px] (최소 너비)
       */}
       <div 
         className="
           w-full gap-6
-          flex flex-col 
-          md:grid md:grid-cols-4 md:min-w-[1000px] md:max-w-[1400px] md:h-[560px]
+          grid grid-cols-1 h-auto
+          md:grid-cols-4 md:min-w-[1000px] md:max-w-[1400px] md:h-[560px]
         "
       >
         
-        {/* 1. [좌측] 상세 정보 패널 */}
-        {/* 모바일: hidden (숨김), 데스크탑: md:flex (보임) + md:col-span-1 */}
+        {/* 1. [좌측] 상세 정보 패널 
+           - 모바일: hidden
+           - PC: block (grid-col-span-1)
+        */}
         <div className="hidden md:flex md:col-span-1 h-full bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col justify-center text-center relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
@@ -100,9 +101,11 @@ export default function Schedule() {
           )}
         </div>
 
-        {/* 2. [중앙] 메인 캘린더 (Calendar) */}
-        {/* 모바일: 항상 보임, 데스크탑: md:col-span-2 (2칸 차지) */}
-        <div className="w-full md:col-span-2 h-auto md:h-full">
+        {/* 2. [중앙] 달력 (Calendar Board)
+           - 모바일: col-span-1 (기본 1칸 차지)
+           - PC: md:col-span-2 (중앙 2칸 차지)
+        */}
+        <div className="w-full h-auto md:h-full md:col-span-2">
           <CalendarBoard 
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
@@ -113,8 +116,10 @@ export default function Schedule() {
           />
         </div>
 
-        {/* 3. [우측] 다가오는 일정 리스트 (Upcoming Panel) */}
-        {/* 모바일: hidden (숨김), 데스크탑: md:flex (보임) + md:col-span-1 */}
+        {/* 3. [우측] 다가오는 일정 (Upcoming)
+           - 모바일: hidden
+           - PC: block (grid-col-span-1)
+        */}
         <div className="hidden md:flex md:col-span-1 h-full bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
