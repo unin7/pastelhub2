@@ -23,7 +23,7 @@ export default function Timeline() {
         <div className={`
           flex-col bg-white z-10 border-r border-gray-100 h-full
           ${roomId ? 'hidden md:flex' : 'flex w-full'} 
-          md:w-[320px] md:min-w-[320px] shrink-0
+          md:w-[35%] md:min-w-[320px] shrink-0
         `}>
           <ChatRoomList 
             current={roomId || ''} 
