@@ -180,41 +180,39 @@ export default function Schedule() {
           />
         </div>
 
-        {/* 모바일 3: 선택된 날짜 상세 내역 (Compact 가로 버전) */}
+        {/* 모바일 3: 선택된 날짜 상세 내역 */}
         {selectedEvent && (
-          <div className="bg-white/70 backdrop-blur-xl p-4 rounded-2xl shadow-lg border border-white/60 animate-in slide-in-from-bottom-4 duration-300">
-            <div className="flex gap-4 items-start">
-              {/* 좌측: 이벤트 아이콘 (PC 디자인 계승) */}
-              <div className="w-16 h-16 flex-shrink-0 bg-white rounded-xl shadow-sm flex items-center justify-center text-3xl border border-purple-50">
+          <div className="relative bg-white/70 backdrop-blur-xl p-5 rounded-2xl shadow-lg border border-white/60 animate-in slide-in-from-bottom-4 duration-300">
+            
+            {/* 1. 우측 상단 EVENT 태그 (절대 위치 고정) */}
+            <div className="absolute top-5 right-5">
+              <span className="bg-purple-50 px-2.5 py-1 rounded-full text-purple-600 text-[10px] font-extrabold uppercase tracking-widest border border-purple-100">
+                {selectedEvent.type}
+              </span>
+            </div>
+        
+            <div className="flex items-center gap-4">
+              {/* 2. 좌측 아이콘 영역 (중앙 정렬됨) */}
+              <div className="w-16 h-16 flex-shrink-0 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
         
-              {/* 우측: 정보 영역 */}
-              <div className="flex-1 min-w-0">
-                {/* 상단: 이벤트 타입 태그 */}
-                <div className="mb-1">
-                  <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100">
-                    {selectedEvent.type}
-                  </span>
-                </div>
-        
-                {/* 제목: 어두운 회색으로 가독성 확보 */}
-                <h3 className="text-lg font-bold text-gray-800 mb-1 leading-tight truncate">
+              {/* 3. 우측 정보 영역 (중앙 정렬됨) */}
+              <div className="flex-1 min-w-0 pr-12"> {/* 태그와 겹치지 않게 우측 패딩 추가 */}
+                <h3 className="font-bold text-gray-800 text-lg mb-0.5 leading-tight truncate">
                   {selectedEvent.title}
                 </h3>
-        
-                {/* 설명: 2줄까지만 표시하여 콤팩트함 유지 */}
-                <p className="text-xs text-gray-500 line-clamp-2 mb-3 leading-snug">
+                <p className="text-gray-500 text-xs mb-3 line-clamp-1">
                   {selectedEvent.description}
                 </p>
         
-                {/* 하단 메타 정보: 경계선과 함께 배치 */}
-                <div className="flex items-center gap-4 pt-2 border-t border-gray-100/50">
+                {/* 하단 메타 정보 (경계선 및 아이콘 포함) */}
+                <div className="flex items-center gap-3 pt-2 border-t border-gray-100/80">
                   <div className="flex items-center gap-1.5 min-w-0">
                     <div className="w-5 h-5 rounded-md bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
                       <CalendarIcon size={10} />
                     </div>
-                    <span className="text-[11px] font-bold text-gray-700 truncate">
+                    <span className="text-[11px] font-bold text-gray-700">
                       {new Date(selectedEvent.date).toLocaleDateString()}
                     </span>
                   </div>
@@ -222,7 +220,7 @@ export default function Schedule() {
                     <div className="w-5 h-5 rounded-md bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
                       <MapPin size={10} />
                     </div>
-                    <span className="text-[11px] font-bold text-gray-700 truncate">Seoul</span>
+                    <span className="text-[11px] font-bold text-gray-700">Seoul</span>
                   </div>
                 </div>
               </div>
