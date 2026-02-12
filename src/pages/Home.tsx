@@ -3,16 +3,16 @@ import { Radio } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
 import { Member } from '../types';
 
-// --- [1] 공식 링크 컴포넌트 (가장 단순하고 확실한 인라인 스타일 방식) ---
+// --- [1] 공식 링크 컴포넌트 ---
 
 function OfficialLinks() {
   const currentYear = new Date().getFullYear();
 
-  // 반복되는 스타일을 변수로 저장 (유지보수 용이)
+  // 스타일 변수 (유지)
   const containerStyle = {
     width: '56px',
     height: '56px',
-    borderRadius: '50%', // rounded-full과 동일
+    borderRadius: '50%',
     position: 'relative' as const,
     display: 'flex',
     alignItems: 'center',
@@ -20,7 +20,7 @@ function OfficialLinks() {
     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
     backgroundColor: 'white',
     overflow: 'hidden',
-    border: '1px solid #f3e8ff' // purple-50
+    border: '1px solid #f3e8ff'
   };
 
   const iconWrapperStyle = {
@@ -29,13 +29,10 @@ function OfficialLinks() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#c084fc', // 기본 보라색 (purple-400)
+    color: '#c084fc',
     zIndex: 10,
     transition: 'color 0.2s'
   };
-
-  // 호버 시 배경 그라데이션 (CSS 클래스가 아닌 인라인으로 처리 불가하므로, Tailwind group-hover 사용하되 백업 스타일 지정)
-  // *주의: Tailwind가 안 먹힐 경우를 대비해 기본 배경색을 지정했습니다.
 
   return (
     <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-100/50 w-full">
@@ -45,14 +42,10 @@ function OfficialLinks() {
         
         {/* 1. Official Site */}
         <a href="https://stellive.me/" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-2">
-          {/* 동그라미 컨테이너: style 속성으로 크기 강제 고정 */}
           <div style={containerStyle} className="group-hover:scale-110 transition-transform duration-300">
-            {/* 호버 시 나타날 그라데이션 배경 */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                  style={{ background: 'linear-gradient(to bottom right, #a5b4fc, #67e8f9)' }}>
             </div>
-            
-            {/* 아이콘 */}
             <div style={iconWrapperStyle} className="group-hover:text-white">
                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
             </div>
@@ -128,9 +121,10 @@ function OfficialLinks() {
       </div>
 
       {/* --- Footer Text --- */}
-      <div className="text-center mt-8 pt-6 border-t border-purple-100/80">
+      {/* 4. 글자 변경 및 상단 패딩 추가 (mt-12 pt-8) */}
+      <div className="text-center mt-12 pt-8 border-t border-purple-100/80">
         <p className="text-sm text-gray-700 font-medium mb-1">
-          Made with 💜 by Fans
+          Made by Fan for Fan
         </p>
         <p className="text-[11px] text-gray-500 leading-relaxed">
           본 사이트는 팬이 운영하는 <b>비공식 팬 사이트</b>입니다.<br className="hidden sm:block"/>
@@ -145,7 +139,7 @@ function OfficialLinks() {
   );
 }
 
-// --- [2] 메인 Home 페이지 (유지) ---
+// --- [2] 메인 Home 페이지 ---
 
 export default function Home() {
   const { data: members } = useJsonData<Member[]>('status');
@@ -168,23 +162,11 @@ export default function Home() {
         </p>
       </div>
 
-      {/* 2. 공식 링크 모음 */}
-      <div className="w-full max-w-3xl px-4">
-        <OfficialLinks />
-      </div>
-
-      {/* 3. 모바일 전용 Live 리스트 */}
+      {/* 2. 모바일 전용 Live 리스트 (순서 변경: 이곳으로 이동됨) */}
       <div className="w-full max-w-md md:hidden px-4">
-        <div className="flex items-center gap-2 mb-4 ml-1">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-            </span>
-            <h2 className="text-sm font-bold text-slate-600 uppercase tracking-widest">
-              Live Now
-            </h2>
-        </div>
-
+        
+        {/* 2. 'Live Now' 글자 및 헤더 제거됨 */}
+        
         {liveMembers.length > 0 ? (
           <div className="grid grid-cols-1 gap-3">
             {liveMembers.map((member, idx) => {
@@ -232,6 +214,11 @@ export default function Home() {
             <span className="text-sm font-medium">현재 방송 중인 멤버가 없습니다</span>
           </div>
         )}
+      </div>
+
+      {/* 3. 공식 링크 모음 (순서 변경: 이곳으로 이동됨) */}
+      <div className="w-full max-w-3xl px-4">
+        <OfficialLinks />
       </div>
 
     </div>
