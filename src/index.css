@@ -3874,6 +3874,51 @@ html {
     scrollbar-width: none;  /* Firefox */
   }
 
+  .gradient-layer {
+    position: absolute;
+    inset: 0; /* top, right, bottom, left: 0 */
+    opacity: 0; /* 기본적으로 숨김 */
+    transition: opacity 0.3s ease-in-out; /* 부드럽게 전환 */
+    border-radius: 9999px; /* rounded-full */
+  }
+  
+  /* 부모(.group)에 마우스가 올라가면(.hover) 투명도를 1로 변경 */
+  .group:hover .gradient-layer {
+    opacity: 1;
+  }
+  
+  /* --- [2] 색상별 그라데이션 정의 (Hex 코드는 Tailwind 300번대 색상 기준) --- */
+  
+  /* 1. Official Site: Indigo -> Cyan */
+  .grad-official {
+    background: linear-gradient(to bottom right, #a5b4fc, #67e8f9);
+  }
+  
+  /* 2. Cafe: Orange -> Yellow */
+  .grad-cafe {
+    background: linear-gradient(to bottom right, #fdba74, #fde047);
+  }
+  
+  /* 3. YouTube: Pink -> Red */
+  .grad-youtube {
+    background: linear-gradient(to bottom right, #f9a8d4, #fca5a5);
+  }
+  
+  /* 4. X (Twitter): Blue -> Purple */
+  .grad-x {
+    background: linear-gradient(to bottom right, #93c5fd, #d8b4fe);
+  }
+  
+  /* 5. Instagram: Purple -> Pink */
+  .grad-insta {
+    background: linear-gradient(to bottom right, #d8b4fe, #f9a8d4);
+  }
+  
+  /* 6. Fanding: Rose -> Pink */
+  .grad-fanding {
+    background: linear-gradient(to bottom right, #fda4af, #f9a8d4);
+  }
+
   
   /* =========================================
      3. 아이콘 크기 및 애니메이션
