@@ -33,7 +33,7 @@ export default function Schedule() {
   };
 
   return (
-    <div className="w-full min-h-screen p-4 p-2 flex justify-center items-center bg-gray-50/50">
+    <div className="w-full h-screen p-2 flex justify-center items-center bg-gray-50/50">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
