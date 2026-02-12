@@ -34,10 +34,16 @@ export default function Schedule() {
 
   return (
     <div className="w-full h-screen p-2 flex justify-center items-center overflow-hidden">
+      {/* 전역 스크롤바 숨김 스타일 */}
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
+
+      <div 
+        className="min-w-[1000px] max-w-[1400px] w-full grid grid-cols-4 gap-6"
+        style={{ height: '560px' }}
+      >
 
       {/* 데스크탑 레이아웃 (md 이상에서만 그리드 유지) */}
       <div className="hidden md:grid min-w-[1000px] max-w-[1400px] w-full grid-cols-4 gap-6 h-[550px]">
