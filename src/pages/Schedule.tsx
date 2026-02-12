@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 // 아이콘 라이브러리 (lucide-react) 임포트
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Info } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Info, Smartphone } from 'lucide-react';
 // 커스텀 훅 및 타입 임포트
 import { useJsonData } from '../hooks/useJsonData';
 import { ScheduleItem } from '../types';
@@ -120,6 +120,7 @@ export default function Schedule() {
   };
 
   return (
+    // 기존 설정 유지 (overflow-hidden)
     <div className="w-full h-screen p-2 flex justify-center items-center overflow-hidden">
       {/* 전역 스크롤바 숨김 스타일 */}
       <style>{`
@@ -128,19 +129,24 @@ export default function Schedule() {
       `}</style>
 
       {/* =================================================================
-          [Mobile View]
-          md:hidden 클래스를 사용하여 데스크톱(md 이상)에서는 숨김 처리
-          모바일에서는 이 영역만 보입니다.
+          [1. MOBILE VIEW]
+          md:hidden -> 화면 너비 768px 미만일 때만 이 텍스트 박스가 보입니다.
          ================================================================= */}
-      <div className="md:hidden w-full h-full flex flex-col justify-center items-center text-center">
-        <h1 className="text-2xl font-bold text-gray-800">MOBILE VIEW</h1>
-        <p className="text-gray-500 mt-2">모바일 전용 화면입니다 (준비중)</p>
+      <div className="md:hidden flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4">
+            <Smartphone className="w-8 h-8 text-gray-400"/>
+        </div>
+        <h2 className="text-xl font-bold text-gray-800">모바일 버전 준비중</h2>
+        <p className="text-gray-500 mt-2 text-sm">
+          화면을 키우시면 PC 버전 캘린더를<br/>
+          확인하실 수 있습니다.
+        </p>
       </div>
 
       {/* =================================================================
-          [Desktop View]
-          hidden md:grid 클래스를 사용하여 모바일에서는 숨김 처리
-          기존 로직은 그대로 유지되며 md(768px) 이상에서만 보입니다.
+          [2. PC VIEW]
+          hidden md:grid -> 768px 이상일 때만 그리드로 표시
+          나머지 클래스는 주신 코드 그대로 유지했습니다.
          ================================================================= */}
       <div 
         className="hidden md:grid min-w-[1000px] max-w-[1400px] w-full grid-cols-4 gap-6"
