@@ -54,7 +54,7 @@ export default function Schedule() {
         className="
           w-full h-full gap-4
           grid grid-cols-1 grid-rows-[auto_1fr]
-          md:grid-cols-4 md:grid-rows-1 md:min-w-[1000px] md:max-w-[1400px] md:h-[560px] md:gap-6
+          md:grid-cols-4 md:min-w-[1000px] md:max-w-[1400px] md:h-[560px] md:gap-6
         "
       >
         
