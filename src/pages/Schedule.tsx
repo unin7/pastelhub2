@@ -140,7 +140,7 @@ export default function Schedule() {
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
                
                {/* 이벤트 아이콘 */}
-               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-5xl mb-8 border border-purple-50">
+               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-4xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
