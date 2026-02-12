@@ -1,20 +1,17 @@
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Info } from 'lucide-react';
 import { ScheduleItem } from '../types';
 
-// 부모에게 받을 Props 타입 정의
+// 부모(Schedule)로부터 받을 데이터와 함수 정의
 interface DesktopScheduleProps {
-  // 데이터
   schedules: ScheduleItem[] | null;
   selectedEvent: ScheduleItem | null;
   currentDate: Date;
   calendarCells: (number | null)[];
-
-  // 공통 상수/함수 (부모에게서 받음)
   monthNames: string[];
+  
+  // 함수들
   getEventIcon: (type: any) => React.ReactNode;
   getEventColor: (type: any) => string;
-
-  // 핸들러
   previousMonth: () => void;
   nextMonth: () => void;
   getEventsForDate: (day: number | null) => ScheduleItem | undefined;
@@ -28,6 +25,7 @@ export default function DesktopSchedule({
   previousMonth, nextMonth, getEventsForDate, setSelectedEvent, setCurrentDate
 }: DesktopScheduleProps) {
   
+  // 원본의 JSX를 그대로 복사했습니다.
   return (
     <div className="w-full h-screen p-2 flex justify-center items-center overflow-hidden bg-gray-50/50">
       <style>{`
@@ -35,7 +33,6 @@ export default function DesktopSchedule({
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* PC 레이아웃: 높이 560px 고정, 4열 그리드 */}
       <div 
         className="min-w-[1000px] max-w-[1400px] w-full grid grid-cols-4 gap-6"
         style={{ height: '560px' }}
@@ -45,25 +42,27 @@ export default function DesktopSchedule({
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
-               {/* 아이콘 */}
+               
+               {/* 이벤트 아이콘 */}
                <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-5xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
-              {/* 태그 */}
+              {/* 이벤트 타입 태그 */}
               <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-purple-50 text-purple-600 text-[11px] font-bold uppercase tracking-widest border border-purple-100 flex-shrink-0">
                 {selectedEvent.type}
               </div>
 
-              {/* 제목/설명 */}
+              {/* 제목 및 설명 */}
               <h2 className="text-2xl font-bold text-gray-800 mb-4 leading-tight px-1 w-full break-keep">
                 {selectedEvent.title}
               </h2>
+              
               <p className="text-sm text-gray-500 leading-relaxed px-1 break-keep line-clamp-4 mb-8">
                 {selectedEvent.description}
               </p>
 
-              {/* 메타 정보 */}
+              {/* 일시 및 장소 메타 정보 */}
               <div className="w-full bg-white/60 rounded-3xl p-5 text-left border border-white/80 space-y-4 shadow-sm mt-auto flex-shrink-0">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
