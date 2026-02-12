@@ -16,14 +16,13 @@ export default function Timeline() {
   return (
     // ✅ [수정] h-full 대신 h-[100dvh]를 사용하여 모바일 주소표시줄 영역 문제 해결 및 스크롤 고정
     <div className="flex justify-center items-center w-full h-[100dvh] p-0 font-sans bg-gray-50 overflow-hidden">
-      <div className="w-full h-full bg-white rounded-none md:rounded-xl shadow-none md:shadow-md border-0 md:border border-gray-200 flex overflow-hidden font-sans relative">
+      <div className="w-full h-full bg-white rounded-xl shadow-none md:shadow-md border-0 md:border border-gray-200 flex overflow-hidden font-sans relative">
         
         {/* 왼쪽: 채팅방 목록 */}
-        {/* ✅ [수정] shrink-0, min-w-[320px] 추가하여 너비 줄어듦 방지 */}
         <div className={`
           flex-col bg-white z-10 border-r border-gray-100 h-full
           ${roomId ? 'hidden md:flex' : 'flex w-full'} 
-          md:w-[360px] md:min-w-[360px] shrink-0
+          min-w-[360px] shrink-0
         `}>
           <ChatRoomList 
             current={roomId || ''} 
