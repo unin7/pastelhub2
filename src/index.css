@@ -1359,10 +1359,6 @@
     height: calc(var(--spacing) * 24);
   }
 
-  .h-\[550px\] { 
-    height: 550px !important; 
-  }
-
   .h-\[560px\] { 
     height: 560px !important; 
   }
