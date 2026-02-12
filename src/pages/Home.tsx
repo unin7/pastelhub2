@@ -1,7 +1,7 @@
 import { 
-  Radio, Calendar, Youtube, Twitter, Coffee, 
-  ExternalLink, Globe, Instagram, Heart 
-} from 'lucide-react'; // ✅ 아이콘 추가
+  Radio, Youtube, Twitter, Coffee, 
+  Globe, Instagram, Heart, ExternalLink 
+} from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
 import { Member } from '../types';
 
@@ -12,7 +12,6 @@ export default function Home() {
     (member) => member.status && member.status.toLowerCase().includes('live')
   ) || [];
 
-  // ✅ [업데이트] 공식 링크 데이터 (제공해주신 URL 반영)
   const officialLinks = [
     { name: '공식 사이트', url: 'https://stellive.me/', icon: Globe, color: 'text-indigo-600', bg: 'bg-indigo-50' },
     { name: '네이버 카페', url: 'https://cafe.naver.com/tteokbokk1', icon: Coffee, color: 'text-green-600', bg: 'bg-green-50' },
@@ -24,7 +23,7 @@ export default function Home() {
 
   return (
     <div className="w-full h-full p-6 md:p-10 overflow-y-auto custom-scrollbar animate-in fade-in duration-500 flex flex-col">
-      <div className="max-w-5xl mx-auto space-y-8 flex-1">
+      <div className="max-w-5xl mx-auto space-y-8 flex-1 w-full">
         
         {/* 1. Hero Section (환영 배너) */}
         <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#F4F8FF] to-[#EFF6FF] border border-blue-50/50 p-8 shadow-sm">
@@ -43,7 +42,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           
-          {/* 2. Live List (메인 콘텐츠) - 8칸 차지 */}
+          {/* 2. Live List (메인 콘텐츠) - 넓게 사용 */}
           <section className="md:col-span-8 space-y-4">
             <div className="flex items-center justify-between px-1">
               <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -53,85 +52,76 @@ export default function Home() {
             </div>
             
             {liveMembers.length > 0 ? (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 {liveMembers.map((member, idx) => {
                    const isXSpace = member.status === 'X_live';
                    return (
                     <a key={idx} href={member.liveUrl} target="_blank" rel="noreferrer"
-                      className="group bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-100 transition-all flex flex-col gap-3"
+                      className="group bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-100 transition-all flex flex-col sm:flex-row items-start sm:items-center gap-4"
                     >
-                      <div className="flex items-center gap-3">
-                        <img src={member.profileImg} alt={member.name} className="w-12 h-12 rounded-full object-cover border-2 border-slate-50" />
-                        <div>
-                          <p className="font-bold text-slate-800">{member.name}</p>
+                      <img src={member.profileImg} alt={member.name} className="w-14 h-14 rounded-full object-cover border-2 border-slate-50 shadow-sm" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-bold text-lg text-slate-800">{member.name}</span>
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isXSpace ? 'bg-purple-100 text-purple-600' : 'bg-red-100 text-red-600'}`}>
                             {isXSpace ? 'SPACE' : 'LIVE'}
                           </span>
                         </div>
+                        <p className="text-sm text-slate-600 truncate">
+                          {member.title || "방송 시청하기"}
+                        </p>
                       </div>
-                      <p className="text-sm text-slate-600 bg-slate-50 rounded-xl p-3 truncate">
-                        {member.title || "방송 시청하기"}
-                      </p>
+                      <ExternalLink size={20} className="text-slate-300 group-hover:text-blue-500 transition-colors hidden sm:block" />
                     </a>
                    )
                 })}
               </div>
             ) : (
-              <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-10 flex flex-col items-center justify-center text-slate-400 gap-3">
+              <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-12 flex flex-col items-center justify-center text-slate-400 gap-3">
                 <Radio size={24} className="opacity-50" />
                 <p className="text-sm">현재 방송 중인 멤버가 없습니다.</p>
               </div>
             )}
           </section>
 
-          {/* 3. Right Sidebar (공식 링크 & 일정) - 4칸 차지 */}
-          <section className="md:col-span-4 space-y-6">
+          {/* 3. Official Links (PC: 오른쪽 사이드바 / Mobile: 하단 배치) */}
+          <section className="md:col-span-4 space-y-4">
+            <h3 className="text-lg font-bold text-slate-800 px-1 flex items-center gap-2">
+              <Globe size={18} /> Official Links
+            </h3>
             
-            {/* ✅ [수정] 공식 링크 모음 (2열 그리드로 변경하여 공간 절약) */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
-               <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <ExternalLink size={16} /> Official Links
-              </h3>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 {officialLinks.map((link, i) => (
                   <a 
                     key={i} 
                     href={link.url} 
                     target="_blank" 
                     rel="noreferrer"
-                    className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group gap-2"
+                    className="flex flex-col items-center justify-center p-4 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group gap-2 text-center"
                   >
-                    <div className={`p-2 rounded-full ${link.bg} ${link.color} group-hover:scale-110 transition-transform`}>
-                      <link.icon size={20} />
+                    <div className={`p-2.5 rounded-full ${link.bg} ${link.color} group-hover:scale-110 transition-transform`}>
+                      <link.icon size={22} />
                     </div>
-                    <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900">{link.name}</span>
+                    <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-900">
+                      {link.name}
+                    </span>
                   </a>
                 ))}
               </div>
             </div>
-
-            {/* 오늘의 일정 (더미) */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
-              <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <Calendar size={16} /> Schedule
-              </h3>
-              <div className="text-center py-6 text-xs text-slate-400">
-                일정 데이터를 불러오는 중...
-              </div>
-            </div>
-
           </section>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="mt-12 py-6 border-t border-slate-100 text-center">
-        <p className="text-[11px] text-slate-400 mb-1">
-          &copy; 2025 Pastel Hub. All rights reserved.
+      {/* 4. Footer (명료한 비공식 명시) */}
+      <footer className="mt-12 py-8 border-t border-slate-100 text-center">
+        <p className="text-xs font-bold text-slate-400 mb-1">
+          Pastel Hub (Unofficial Fan Site)
         </p>
-        <p className="text-[10px] text-slate-300">
-          This is an unofficial fan application and is not affiliated with STELLIVE. <br/>
-          All member images and names belong to their respective owners.
+        <p className="text-[11px] text-slate-300">
+          본 서비스는 스텔라이브(STELLIVE) 공식 앱이 아닌 <span className="text-slate-400 font-medium">비공식 팬사이트</span>입니다.<br/>
+          제공되는 모든 이미지 및 명칭의 저작권은 스텔라이브 및 각 권리자에게 있습니다.
         </p>
       </footer>
       
