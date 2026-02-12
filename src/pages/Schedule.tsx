@@ -41,7 +41,7 @@ export default function Schedule() {
 
       {/* 데스크탑 레이아웃 (md 이상에서만 그리드 유지) */}
       <div 
-        className="min-w-[1000px] max-w-[1400px] w-full md:grid grid-cols-4 gap-6"
+        className="hidden min-w-[1000px] max-w-[1400px] w-full md:grid grid-cols-4 gap-6"
         style={{ height: '560px' }}
       >
         
