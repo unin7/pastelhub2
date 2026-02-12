@@ -100,10 +100,10 @@ export default function Schedule() {
         - 화면이 1024px 미만이면 MobileSchedule 표시
         - 화면이 1024px 이상이면 DesktopSchedule 표시
       */}
-      <div className="block lg:hidden">
+      <div className="block md:hidden">
         <MobileSchedule {...viewProps} />
       </div>
-      <div className="hidden lg:block">
+      <div className="hidden md:block">
         <DesktopSchedule {...viewProps} />
       </div>
     </>
