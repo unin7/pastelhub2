@@ -143,70 +143,10 @@ export default function Home() {
         </p>
       </div>
 
-      {/* 2. 공식 링크 모음 (PC/Mobile 공통 노출) */}
+      
+      {/* 3. 공식 링크 모음 (PC/Mobile 공통 노출) */}
       <div className="w-full max-w-3xl px-4">
         <OfficialLinks />
-      </div>
-
-      {/* 3. 모바일 전용 Live 리스트 (md:hidden - 768px 미만에서만 보임) */}
-      <div className="w-full max-w-md md:hidden px-4">
-        <div className="flex items-center gap-2 mb-4 ml-1">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-            </span>
-            <h2 className="text-sm font-bold text-slate-600 uppercase tracking-widest">
-              Live Now
-            </h2>
-        </div>
-
-        {liveMembers.length > 0 ? (
-          <div className="grid grid-cols-1 gap-3">
-            {liveMembers.map((member, idx) => {
-              const isXSpace = member.status === 'X_live';
-              const badgeText = isXSpace ? "SPACE" : "LIVE";
-              const ringGradient = isXSpace ? 'from-purple-400 to-pink-400' : 'from-emerald-400 to-teal-400';
-
-              return (
-                <a 
-                  key={`${member.name}-${idx}`}
-                  href={member.liveUrl} 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="group flex items-center gap-4 p-3 rounded-2xl bg-white shadow-sm border border-slate-100 active:scale-[0.98] transition-all hover:shadow-md hover:border-purple-200"
-                >
-                  <div className={`relative flex-none w-[52px] h-[52px] rounded-full p-[2px] bg-gradient-to-br ${ringGradient}`}>
-                    <img src={member.profileImg} alt={member.name} className="w-full h-full rounded-full object-cover bg-white" />
-                    <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow-sm border border-slate-50">
-                      {isXSpace ? <Radio size={12} className="text-purple-500"/> : <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"/>}
-                    </div>
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-base font-bold text-slate-800 truncate group-hover:text-purple-600 transition-colors">
-                          {member.name}
-                      </span>
-                      <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${isXSpace ? 'bg-purple-50 text-purple-600 border-purple-100' : 'bg-red-50 text-red-600 border-red-100'}`}>
-                        {badgeText}
-                      </span>
-                    </div>
-                    <p className="text-xs text-slate-500 truncate group-hover:text-slate-700">
-                      {member.title || (isXSpace ? '스페이스 청취하기' : '방송 시청하기')}
-                    </p>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-slate-400 space-y-3 bg-slate-50/50 rounded-2xl border border-slate-100 border-dashed">
-            <div className="p-3 bg-slate-100 rounded-full">
-                <Radio className="size-6 text-slate-300" />
-            </div>
-            <span className="text-sm font-medium">현재 방송 중인 멤버가 없습니다</span>
-          </div>
-        )}
       </div>
     </div>
   );
