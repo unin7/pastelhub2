@@ -161,7 +161,7 @@ export default function Schedule() {
 
         {/* 모바일 3: 선택된 날짜 상세 내역 */}
         {selectedEvent && (
-          <div className="bg-purple-600 text-white p-5 rounded-2xl shadow-lg animate-in slide-in-from-bottom-4 duration-300">
+          <div className="bg-white/70 text-white p-5 rounded-2xl shadow-lg animate-in slide-in-from-bottom-4 duration-300">
              <div className="flex justify-between items-start mb-3">
                <span className="text-2xl">{getEventIcon(selectedEvent.type)}</span>
                <span className="bg-white/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase">{selectedEvent.type}</span>
