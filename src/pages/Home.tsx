@@ -1,6 +1,6 @@
 import { 
-  Radio, Youtube, Twitter, Coffee, 
-  Globe, Instagram, Heart, ExternalLink 
+  Radio, Youtube, Instagram, Twitter, Coffee, 
+  Globe, Heart
 } from 'lucide-react';
 import { useJsonData } from '../hooks/useJsonData';
 import { Member } from '../types';
@@ -12,119 +12,161 @@ export default function Home() {
     (member) => member.status && member.status.toLowerCase().includes('live')
   ) || [];
 
-  const officialLinks = [
-    { name: '공식 사이트', url: 'https://stellive.me/', icon: Globe, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-    { name: '네이버 카페', url: 'https://cafe.naver.com/tteokbokk1', icon: Coffee, color: 'text-green-600', bg: 'bg-green-50' },
-    { name: '유튜브', url: 'https://www.youtube.com/@stellive_official', icon: Youtube, color: 'text-red-600', bg: 'bg-red-50' },
-    { name: '공식 X', url: 'https://x.com/StelLive_kr', icon: Twitter, color: 'text-slate-700', bg: 'bg-slate-100' },
-    { name: '인스타그램', url: 'https://www.instagram.com/officialstellive/', icon: Instagram, color: 'text-pink-600', bg: 'bg-pink-50' },
-    { name: '공식 팬딩', url: 'https://fanding.kr/@stellive/', icon: Heart, color: 'text-orange-500', bg: 'bg-orange-50' },
+  // ✅ 공식 링크 데이터 (PC에서만 보임)
+  const socialLinks = [
+    {
+      icon: Globe,
+      label: 'Official Site',
+      url: 'https://stellive.me/',
+      gradient: 'from-indigo-300 to-purple-300',
+    },
+    {
+      icon: Coffee,
+      label: 'Fan Cafe',
+      url: 'https://cafe.naver.com/tteokbokk1',
+      gradient: 'from-green-300 to-emerald-300',
+    },
+    {
+      icon: Youtube,
+      label: 'YouTube',
+      url: 'https://www.youtube.com/@stellive_official',
+      gradient: 'from-pink-300 to-red-300',
+    },
+    {
+      icon: Twitter,
+      label: 'X (Twitter)',
+      url: 'https://x.com/StelLive_kr',
+      gradient: 'from-gray-300 to-slate-400', 
+    },
+    {
+      icon: Instagram,
+      label: 'Instagram',
+      url: 'https://www.instagram.com/officialstellive/',
+      gradient: 'from-purple-300 to-pink-300',
+    },
+    {
+      icon: Heart,
+      label: 'Fanding',
+      url: 'https://fanding.kr/@stellive/',
+      gradient: 'from-orange-300 to-yellow-300',
+    },
   ];
 
   return (
-    <div className="w-full h-full p-6 md:p-10 overflow-y-auto custom-scrollbar animate-in fade-in duration-500 flex flex-col">
-      <div className="max-w-5xl mx-auto space-y-8 flex-1 w-full">
+    <div className="w-full h-full overflow-y-auto custom-scrollbar animate-in fade-in duration-500">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-10 py-10">
         
-        {/* 1. Hero Section (환영 배너) */}
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#F4F8FF] to-[#EFF6FF] border border-blue-50/50 p-8 shadow-sm">
-          <div className="relative z-10">
-            <h1 className="text-2xl md:text-3xl font-bold text-slate-800 mb-2">
-              반가워요! <span className="text-pastel-blue">파스텔</span>님 ✨
-            </h1>
-            <p className="text-slate-500 text-sm md:text-base">
-              스텔라이브의 모든 소식을 한눈에 확인하세요.
-            </p>
-          </div>
-          <div className="absolute -right-4 -bottom-8 opacity-5 pointer-events-none">
-            <Radio size={200} />
-          </div>
-        </section>
+        {/* 1. 공통 환영 문구 */}
+        <div className="text-center space-y-4 px-4">
+          <p className="text-slate-600 text-lg md:text-xl font-medium">
+            팬덤을 위한 모든 정보가 한곳에 ✨
+          </p>
+          <p className="text-slate-400 text-sm md:text-base">
+            상단 메뉴나 사이드바를 통해 원하는 정보를 확인하세요.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          
-          {/* 2. Live List (메인 콘텐츠) - 넓게 사용 */}
-          <section className="md:col-span-8 space-y-4">
-            <div className="flex items-center justify-between px-1">
-              <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                <Radio className="text-red-500 animate-pulse" size={20} />
-                On Air
-              </h2>
-            </div>
-            
-            {liveMembers.length > 0 ? (
-              <div className="grid grid-cols-1 gap-4">
+        {/* 2. [모바일 전용] Live 리스트 (md:hidden) */}
+        <div className="w-full max-w-md md:hidden px-4">
+          {liveMembers.length > 0 ? (
+            <div className="space-y-4">
+              <div className="flex items-center justify-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                </span>
+                <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest">
+                  Live Now
+                </h2>
+              </div>
+              
+              <div className="grid grid-cols-1 gap-3">
                 {liveMembers.map((member, idx) => {
-                   const isXSpace = member.status === 'X_live';
-                   return (
-                    <a key={idx} href={member.liveUrl} target="_blank" rel="noreferrer"
-                      className="group bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-100 transition-all flex flex-col sm:flex-row items-start sm:items-center gap-4"
+                  const isXSpace = member.status === 'X_live';
+                  const badgeText = isXSpace ? "SPACE" : "LIVE";
+                  const ringGradient = isXSpace ? 'from-pink-400 to-purple-400' : 'from-emerald-400 to-teal-400';
+
+                  return (
+                    <a 
+                      key={`${member.name}-${idx}`}
+                      href={member.liveUrl} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="flex items-center gap-3 p-3 rounded-2xl bg-white shadow-sm border border-slate-100 active:scale-[0.98] transition-all"
                     >
-                      <img src={member.profileImg} alt={member.name} className="w-14 h-14 rounded-full object-cover border-2 border-slate-50 shadow-sm" />
+                      <div className={`relative flex-none w-[44px] h-[44px] rounded-full p-[2px] bg-gradient-to-br ${ringGradient}`}>
+                        <img src={member.profileImg} alt={member.name} className="w-full h-full rounded-full object-cover bg-white" />
+                      </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-bold text-lg text-slate-800">{member.name}</span>
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isXSpace ? 'bg-purple-100 text-purple-600' : 'bg-red-100 text-red-600'}`}>
-                            {isXSpace ? 'SPACE' : 'LIVE'}
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-bold text-slate-800 truncate">{member.name}</span>
+                          <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${isXSpace ? 'bg-purple-50 text-purple-600' : 'bg-red-50 text-red-600 animate-pulse'}`}>
+                            {badgeText}
                           </span>
                         </div>
-                        <p className="text-sm text-slate-600 truncate">
-                          {member.title || "방송 시청하기"}
+                        <p className="text-xs text-slate-400 truncate">
+                          {member.title || (isXSpace ? '스페이스 청취하기' : '방송 시청하기')}
                         </p>
                       </div>
-                      <ExternalLink size={20} className="text-slate-300 group-hover:text-blue-500 transition-colors hidden sm:block" />
                     </a>
-                   )
+                  );
                 })}
               </div>
-            ) : (
-              <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-12 flex flex-col items-center justify-center text-slate-400 gap-3">
-                <Radio size={24} className="opacity-50" />
-                <p className="text-sm">현재 방송 중인 멤버가 없습니다.</p>
-              </div>
-            )}
-          </section>
-
-          {/* 3. Official Links (PC: 오른쪽 사이드바 / Mobile: 하단 배치) */}
-          <section className="md:col-span-4 space-y-4">
-            <h3 className="text-lg font-bold text-slate-800 px-1 flex items-center gap-2">
-              <Globe size={18} /> Official Links
-            </h3>
-            
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
-              <div className="grid grid-cols-2 gap-3">
-                {officialLinks.map((link, i) => (
-                  <a 
-                    key={i} 
-                    href={link.url} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="flex flex-col items-center justify-center p-4 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all group gap-2 text-center"
-                  >
-                    <div className={`p-2.5 rounded-full ${link.bg} ${link.color} group-hover:scale-110 transition-transform`}>
-                      <link.icon size={22} />
-                    </div>
-                    <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-900">
-                      {link.name}
-                    </span>
-                  </a>
-                ))}
-              </div>
             </div>
-          </section>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-8 text-slate-400 space-y-2 opacity-70">
+              <Radio className="size-6 mb-1" />
+              <span className="text-xs">현재 방송 중인 멤버가 없습니다</span>
+            </div>
+          )}
         </div>
-      </div>
 
-      {/* 4. Footer (명료한 비공식 명시) */}
-      <footer className="mt-12 py-8 border-t border-slate-100 text-center">
-        <p className="text-xs font-bold text-slate-400 mb-1">
-          Pastel Hub (Unofficial Fan Site)
-        </p>
-        <p className="text-[11px] text-slate-300">
-          본 서비스는 스텔라이브(STELLIVE) 공식 앱이 아닌 <span className="text-slate-400 font-medium">비공식 팬사이트</span>입니다.<br/>
-          제공되는 모든 이미지 및 명칭의 저작권은 스텔라이브 및 각 권리자에게 있습니다.
-        </p>
-      </footer>
-      
+        {/* 3. [PC 전용] Official Links (hidden md:block) */}
+        {/* ✅ 모바일에서는 숨기고(hidden), PC(md)부터 보임(block) */}
+        <div className="hidden md:block w-full max-w-2xl px-6">
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-100/50">
+            <h4 className="text-center text-gray-800 font-bold mb-5">Official Links</h4>
+
+            <div className="flex justify-center gap-4 flex-wrap">
+              {socialLinks.map((link, index) => (
+                <a
+                  key={index}
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group relative flex flex-col items-center gap-2 cursor-pointer"
+                >
+                  {/* Icon Circle */}
+                  <div className="relative w-14 h-14 rounded-full bg-white shadow-md hover:shadow-xl transition-all overflow-hidden group-hover:scale-110 duration-300">
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br ${link.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                    ></div>
+                    <div className="absolute inset-0 flex items-center justify-center text-purple-400 group-hover:text-white transition-colors z-10">
+                      <link.icon className="w-6 h-6" />
+                    </div>
+                  </div>
+                  <span className="text-xs font-medium text-gray-500 group-hover:text-purple-600 transition-colors">
+                    {link.label}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* 4. [공통] Footer (항상 보임) */}
+        {/* ✅ Links 박스 밖으로 빼서 모바일/PC 모두 보이게 설정 */}
+        <div className="text-center space-y-1 pt-4 px-4">
+          <p className="text-sm text-gray-600 font-medium">
+            Made with 💜 by Fans, for Fans
+          </p>
+          <p className="text-[10px] text-gray-400">
+            © 2025 Fan Community. All rights reserved. <br/>
+            This is an unofficial fan application.
+          </p>
+        </div>
+
+      </div>
     </div>
   );
 }
