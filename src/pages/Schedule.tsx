@@ -40,7 +40,7 @@ export default function Schedule() {
       `}</style>
 
       {/* 데스크탑 레이아웃 (md 이상에서만 그리드 유지) */}
-      <div className="hidden md:grid min-w-[1000px] max-w-[1400px] w-full grid-cols-4 gap-6 h-full">
+      <div className="hidden md:grid min-w-[1000px] max-w-[1400px] w-full grid-cols-4 gap-6 h-[550px]">
         
         {/* 1. [좌측] 상세 정보 */}
         <div className="col-span-1 bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex flex-col justify-center text-center h-full relative overflow-hidden">
