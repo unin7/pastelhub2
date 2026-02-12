@@ -1,21 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChatRoomList } from './ChatRoomList'; 
 import { ChatConversation } from './ChatConversation'; 
 
 export default function Timeline() {
-  // 초기값을 null로 두어 모바일에서 처음에 목록이 보이게 하는 것이 좋습니다.
   const [roomId, setRoomId] = useState<string | null>(null);
 
+  // ✅ [수정] PC 버전(768px 이상)으로 처음 들어왔을 때만 기본 방 자동 선택
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile && !roomId) {
+      setRoomId("group_stellive_all"); // 기본으로 보여줄 방 ID
+    }
+  }, []);
+
   return (
-    <div className="flex justify-center items-center w-full h-full p-0 font-sans bg-gray-50">
-      <div className="w-full h-full bg-white rounded-xl shadow-md border border-gray-200 flex overflow-hidden font-sans relative">
+    // ✅ [수정] h-full 대신 h-[100dvh]를 사용하여 모바일 주소표시줄 영역 문제 해결 및 스크롤 고정
+    <div className="flex justify-center items-center w-full h-[100dvh] p-0 font-sans bg-gray-50 overflow-hidden">
+      <div className="w-full h-full bg-white rounded-none md:rounded-xl shadow-none md:shadow-md border-0 md:border border-gray-200 flex overflow-hidden font-sans relative">
         
         {/* 왼쪽: 채팅방 목록 */}
-        {/* 모바일: roomId가 있으면 숨김 / 데스크탑: 항상 보임 (w-[320px]) */}
+        {/* ✅ [수정] shrink-0, min-w-[320px] 추가하여 너비 줄어듦 방지 */}
         <div className={`
-          flex-col bg-white z-10 border-r border-gray-100
+          flex-col bg-white z-10 border-r border-gray-100 h-full
           ${roomId ? 'hidden md:flex' : 'flex w-full'} 
-          md:w-[320px] md:flex-none
+          md:w-[320px] md:min-w-[320px] shrink-0
         `}>
           <ChatRoomList 
             current={roomId || ''} 
@@ -24,9 +32,8 @@ export default function Timeline() {
         </div>
         
         {/* 오른쪽: 대화 내용 */}
-        {/* 모바일: roomId가 없으면 숨김 / 데스크탑: 항상 보임 (flex-1) */}
         <div className={`
-          flex-col min-w-0 bg-[#b2c7da] relative
+          flex-col min-w-0 bg-[#b2c7da] relative h-full
           ${roomId ? 'flex w-full' : 'hidden md:flex'}
           md:flex-1 
         `}>
@@ -34,11 +41,10 @@ export default function Timeline() {
             <ChatConversation 
               key={roomId} 
               roomId={roomId} 
-              onBack={() => setRoomId(null)} // 뒤로가기 핸들러 전달
+              onBack={() => setRoomId(null)} 
             />
           ) : (
-            // 데스크탑에서 선택된 방이 없을 때 보여줄 화면
-            <div className="hidden md:flex flex-1 flex-col items-center justify-center text-gray-400 gap-2 bg-[#b2c7da]">
+            <div className="hidden md:flex flex-1 flex-col items-center justify-center text-gray-400 gap-2 bg-[#b2c7da] h-full">
                <p className="text-sm font-medium">대화 상대를 선택해주세요</p>
             </div>
           )}
