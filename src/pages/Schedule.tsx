@@ -184,21 +184,22 @@ export default function Schedule() {
         {selectedEvent && (
           <div className="relative bg-white/70 backdrop-blur-xl p-5 rounded-2xl shadow-lg border border-white/60 animate-in slide-in-from-bottom-4 duration-300">
             
-            {/* 1. 우측 상단 EVENT 태그 (절대 위치 고정) */}
-            <div className="absolute top-5 right-5">
-              <span className="bg-purple-50 px-2.5 py-1 rounded-full text-purple-600 text-[10px] font-extrabold uppercase tracking-widest border border-purple-100">
+            {/* 1. 우측 상단 모서리 태그 */}
+            <div className="absolute top-4 right-4">
+              <span className="bg-purple-50 px-2 py-0.5 rounded-md text-purple-600 text-[10px] font-extrabold uppercase tracking-widest border border-purple-100/50">
                 {selectedEvent.type}
               </span>
             </div>
         
+            {/* 2. 메인 콘텐츠 (아이콘 중앙 정렬) */}
             <div className="flex items-center gap-4">
-              {/* 2. 좌측 아이콘 영역 (중앙 정렬됨) */}
+              {/* 좌측 아이콘 박스 */}
               <div className="w-16 h-16 flex-shrink-0 bg-white rounded-2xl shadow-sm flex items-center justify-center text-3xl border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
         
-              {/* 3. 우측 정보 영역 (중앙 정렬됨) */}
-              <div className="flex-1 min-w-0 pr-12"> {/* 태그와 겹치지 않게 우측 패딩 추가 */}
+              {/* 우측 정보 영역 */}
+              <div className="flex-1 min-w-0 pr-10"> {/* 태그와 겹치지 않게 우측 여백 확보 */}
                 <h3 className="font-bold text-gray-800 text-lg mb-0.5 leading-tight truncate">
                   {selectedEvent.title}
                 </h3>
@@ -206,18 +207,18 @@ export default function Schedule() {
                   {selectedEvent.description}
                 </p>
         
-                {/* 하단 메타 정보 (경계선 및 아이콘 포함) */}
+                {/* 하단 메타 정보 (날짜, 장소) */}
                 <div className="flex items-center gap-3 pt-2 border-t border-gray-100/80">
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <div className="w-5 h-5 rounded-md bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-5 h-5 rounded-md bg-purple-50 flex items-center justify-center text-purple-500">
                       <CalendarIcon size={10} />
                     </div>
                     <span className="text-[11px] font-bold text-gray-700">
                       {new Date(selectedEvent.date).toLocaleDateString()}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <div className="w-5 h-5 rounded-md bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-5 h-5 rounded-md bg-pink-50 flex items-center justify-center text-pink-500">
                       <MapPin size={10} />
                     </div>
                     <span className="text-[11px] font-bold text-gray-700">Seoul</span>
