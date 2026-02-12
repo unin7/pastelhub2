@@ -33,25 +33,32 @@ export default function Schedule() {
   };
 
   return (
-    // 전체 컨테이너
-    <div className="w-full min-h-screen p-4 flex justify-center items-start md:items-center bg-gray-50/50">
+    // 전체 컨테이너: 
+    // 모바일: 스크롤 가능(overflow-y-auto), 세로 정렬
+    // PC: 화면 고정(h-screen, overflow-hidden), 중앙 정렬
+    <div className="w-full min-h-screen md:h-screen p-2 flex justify-center items-start md:items-center overflow-y-auto md:overflow-hidden bg-gray-50/50">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* 레이아웃 전략:
-        1. 기본(Mobile): flex flex-col (세로 배치)
-        2. md 이상(Desktop): grid grid-cols-4 (가로 4칸 배치)
+      {/* 레이아웃 컨테이너 수정 
+         1. 모바일: w-full, h-auto, flex-col (세로 배치)
+         2. PC (md 이상): 보내주신 코드 참고 -> min-w-[1000px], grid-cols-4, h-[560px] 적용
       */}
-      <div className="w-full max-w-md md:max-w-[1400px] flex flex-col md:grid md:grid-cols-4 gap-6">
+      <div 
+        className="
+          w-full flex flex-col gap-6
+          md:grid md:grid-cols-4 md:min-w-[1000px] md:max-w-[1400px] md:h-[560px]
+        "
+      >
         
         {/* =======================
             1. [좌측] 상세 정보 패널
             - 모바일: hidden (숨김)
-            - 데스크탑: md:flex (보임), md:col-span-1
+            - PC: flex (보임)
            ======================= */}
-        <div className="hidden md:flex md:col-span-1 h-[560px] bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col justify-center text-center relative overflow-hidden">
+        <div className="hidden md:flex md:col-span-1 h-full bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col justify-center text-center relative overflow-hidden">
           {selectedEvent ? (
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
                <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-4xl mb-8 border border-purple-50">
@@ -100,9 +107,9 @@ export default function Schedule() {
         {/* =======================
             2. [중앙] 달력 (Calendar Board)
             - 모바일: 항상 보임 (기본값)
-            - 데스크탑: md:col-span-2 (중앙 2칸 차지)
+            - PC: col-span-2 (중앙 2칸 차지)
            ======================= */}
-        <div className="w-full md:col-span-2 h-auto md:h-[560px]">
+        <div className="w-full h-auto md:h-full md:col-span-2">
           <CalendarBoard 
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
@@ -116,9 +123,9 @@ export default function Schedule() {
         {/* =======================
             3. [우측] 다가오는 일정 (Upcoming)
             - 모바일: hidden (숨김)
-            - 데스크탑: md:flex (보임), md:col-span-1
+            - PC: flex (보임)
            ======================= */}
-        <div className="hidden md:flex md:col-span-1 h-[560px] bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col overflow-hidden">
+        <div className="hidden md:flex md:col-span-1 h-full bg-white/70 backdrop-blur-xl rounded-xl p-6 shadow-sm border border-white/60 flex-col overflow-hidden">
           <div className="flex items-center gap-2 mb-4 pl-1 flex-shrink-0">
             <Clock className="w-5 h-5 text-purple-500" />
             <h4 className="text-gray-800 font-bold text-lg">Upcoming</h4>
