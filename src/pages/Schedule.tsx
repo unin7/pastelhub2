@@ -53,7 +53,7 @@ export default function Schedule() {
             <div className="animate-in fade-in zoom-in duration-300 h-full flex flex-col items-center justify-center w-full pt-8 pb-8">
                
                {/* 이벤트 아이콘 */}
-               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-5xl mb-8 border border-purple-50">
+               <div className="w-24 h-24 flex-shrink-0 aspect-square mx-auto bg-white rounded-xl shadow-sm flex items-center justify-center text-4xl mb-8 border border-purple-50">
                 {getEventIcon(selectedEvent.type)}
               </div>
               
@@ -180,19 +180,53 @@ export default function Schedule() {
           />
         </div>
 
-        {/* 모바일 3: 선택된 날짜 상세 내역 */}
+        {/* 모바일 3: 선택된 날짜 상세 내역 (Compact 가로 버전) */}
         {selectedEvent && (
-          <div className="bg-white/70 text-white p-5 rounded-2xl shadow-lg animate-in slide-in-from-bottom-4 duration-300">
-             <div className="flex justify-between items-start mb-3">
-               <span className="text-2xl">{getEventIcon(selectedEvent.type)}</span>
-               <span className="bg-purple-50 px-2 py-0.5 rounded text-purple-600 text-[10px] font-bold uppercase">{selectedEvent.type}</span>
-             </div>
-             <h3 className="font-bold text-gray-800 text-lg mb-1">{selectedEvent.title}</h3>
-             <p className="text-gray-500 text-xs mb-4">{selectedEvent.description}</p>
-             <div className="flex items-center gap-3 text-xs pt-3 border-t border-slate/20">
-               <div className="flex items-center gap-1"><CalendarIcon size={12}/> {new Date(selectedEvent.date).toLocaleDateString()}</div>
-               <div className="flex items-center gap-1"><MapPin size={12}/> Seoul</div>
-             </div>
+          <div className="bg-white/70 backdrop-blur-xl p-4 rounded-2xl shadow-lg border border-white/60 animate-in slide-in-from-bottom-4 duration-300">
+            <div className="flex gap-4 items-start">
+              {/* 좌측: 이벤트 아이콘 (PC 디자인 계승) */}
+              <div className="w-16 h-16 flex-shrink-0 bg-white rounded-xl shadow-sm flex items-center justify-center text-3xl border border-purple-50">
+                {getEventIcon(selectedEvent.type)}
+              </div>
+        
+              {/* 우측: 정보 영역 */}
+              <div className="flex-1 min-w-0">
+                {/* 상단: 이벤트 타입 태그 */}
+                <div className="mb-1">
+                  <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-widest border border-purple-100">
+                    {selectedEvent.type}
+                  </span>
+                </div>
+        
+                {/* 제목: 어두운 회색으로 가독성 확보 */}
+                <h3 className="text-lg font-bold text-gray-800 mb-1 leading-tight truncate">
+                  {selectedEvent.title}
+                </h3>
+        
+                {/* 설명: 2줄까지만 표시하여 콤팩트함 유지 */}
+                <p className="text-xs text-gray-500 line-clamp-2 mb-3 leading-snug">
+                  {selectedEvent.description}
+                </p>
+        
+                {/* 하단 메타 정보: 경계선과 함께 배치 */}
+                <div className="flex items-center gap-4 pt-2 border-t border-gray-100/50">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <div className="w-5 h-5 rounded-md bg-purple-50 flex items-center justify-center text-purple-500 flex-shrink-0">
+                      <CalendarIcon size={10} />
+                    </div>
+                    <span className="text-[11px] font-bold text-gray-700 truncate">
+                      {new Date(selectedEvent.date).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <div className="w-5 h-5 rounded-md bg-pink-50 flex items-center justify-center text-pink-500 flex-shrink-0">
+                      <MapPin size={10} />
+                    </div>
+                    <span className="text-[11px] font-bold text-gray-700 truncate">Seoul</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
